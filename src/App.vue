@@ -4,15 +4,18 @@
       <Navigation />
     </div>
     <router-view/>
+    <Footer />
   </div>
 </template>
 
 <script>
 import Navigation from './components/layout/Navigation.vue'
+import Footer from './components/layout/Footer.vue'
 
 export default {
   components: {
-    Navigation
+    Navigation, 
+    Footer
   }
 }
 </script>

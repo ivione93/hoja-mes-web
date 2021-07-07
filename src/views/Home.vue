@@ -1,19 +1,29 @@
 <template>
-  <div class="container mt-50">
-    <div class="columns">
-      <div class="column is-6 is-offset-3">
-        Home
-      </div>
-    </div>
+  <div class="container is-fluid" v-if="user">
+    {{ user.email }}
+  </div>
+  <div class="container is-fluid" v-else>
+    No se ha encontrado usuario
   </div>
 </template>
 
 <script>
-
+import firebase from 'firebase'
 export default {
   name: 'Home',
-  components: {
-
+  data() {
+    return {
+        user: null
+    };
+  },
+  created() {
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            this.user = user
+        } else {
+            this.user = null
+        }                    
+    })   
   }
 }
 </script>
