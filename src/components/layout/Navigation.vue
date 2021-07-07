@@ -18,7 +18,7 @@
                         <div class="navbar-item has-dropdown is-hoverable">
                             <a class="navbar-link">{{ user.email }}</a>
                             <div class="navbar-dropdown">
-                                <router-link class="navbar-item" to="/">Editar usuario</router-link>
+                                <router-link class="navbar-item" to="/">Editar perfil</router-link>
                                 <a class="navbar-item" @click.prevent="logout">Cerrar sesión</a>
                             </div>
                         </div>

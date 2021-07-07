@@ -7,14 +7,14 @@
         <form action="#" @submit.prevent="login" class="box">
           <div class="field">
             <div class="control">
-              <input class="input is-medium" type="email" placeholder="Email" v-model="email">
+              <input class="input" type="email" placeholder="Email" v-model="email">
             </div>
           </div>
           <div class="field">
             <div class="control">
-              <input class="input is-medium" type="password" placeholder="Contraseña" v-model="password">
+              <input class="input" type="password" placeholder="Contraseña" v-model="password">
             </div>
-            <a @click.prevent="recoveryPass">Recuperar la contraseña</a>
+            <a @click.prevent="recoveryPass" class="has-text-grey-dark level-right">Recuperar la contraseña</a>
           </div>
           <button type="submit" class="button is-accent">Iniciar sesión</button>
         </form>
