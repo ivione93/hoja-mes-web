@@ -1,9 +1,25 @@
 <template>
-    <div class="column is-half">
-        <h1 class="title is-1">HOJA DEL MES</h1>
-        <h3 class="title is-3">Aplicación web de escritorio de la HOJA DEL MES</h3>
-        <p>También disponible para móvil (Play Store)</p>
-    </div>
+    <v-col cols="12" md="6">
+        <v-card outlined>
+            <v-list-item three-line>
+                <v-list-item-content>
+                    <div class="text-overline mb-4">
+                    Aplicación web de escritorio de la HOJA DEL MES
+                    </div>
+                    <v-list-item-title class="text-h5 mb-1">
+                    HOJA DEL MES
+                    </v-list-item-title>
+                    <v-list-item-subtitle>También disponible para móvil</v-list-item-subtitle>
+                </v-list-item-content>
+                <v-list-item-avatar tile size="150" color="grey">QR</v-list-item-avatar>
+            </v-list-item>
+
+            <v-card-actions>
+            <v-btn outlined>Play Store</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-col>
+    
 </template>
 
 <script>

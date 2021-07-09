@@ -1,0 +1,16 @@
+.link {
+    text-decoration: none
+}
+
+.mt-100 {
+    margin-top: 100px;
+}
+
+.mt-70 {
+    margin-top: 70px;
+}
+
+.scrollable {
+    overflow-y: scroll;
+    height: 700px;
+}

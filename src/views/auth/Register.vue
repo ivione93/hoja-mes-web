@@ -1,45 +1,33 @@
 <template>
-  <div class="container is-fluid mt-50">
-    <div class="columns">
+    <v-row class="mt-100" justify="center">
       <Info />
-      <div class="column is-half">
-          <h3 class="title is-3">ALTA USUARIO</h3>
-        <form action="#" @submit.prevent="register" class="box">
-          <div class="field">
-            <label class="label">INTRODUCE TUS DATOS DE REGISTRO</label>
-            <div class="control">
-              <input class="input" type="text" placeholder="Nombre" v-model="name">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="text" placeholder="Apellidos" v-model="surname">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="date" placeholder="Fecha nacimiento" v-model="birth">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="email" placeholder="Email" v-model="email">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="password" placeholder="Contraseña" v-model="password">
-            </div>
-          </div>
-          <button type="submit" class="button is-accent">Registrar</button>
-        </form>
-        <div class="notification is-danger mt-10" v-if="error">
-            {{ error }}
-        </div>
-      </div>
-    </div>
-    <!--<div class="column is-half"></div>-->
-  </div>
+      <v-col cols="12" sm="4">
+        <v-form action="#" @submit.prevent="register" class="box">
+          <h3>INTRODUCE TUS DATOS DE REGISTRO</h3><br><hr><br>
+          <v-container>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="name" label="Nombre" type="text" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="surname" label="Apellidos" type="text" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="password" label="Fecha de nacimiento" type="date" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="email" label="Email" type="email" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="password" label="Contraseña" type="password" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6" align="center">
+              <v-btn type="submit" color="primary">Registrar</v-btn>
+            </v-row>
+          </v-container>
+        </v-form>
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
+      </v-col>
+    </v-row>
 </template>
 
 <script>

@@ -1,42 +1,27 @@
 <template>
-    <nav class="navbar is-light" role="navigation" aria-label="main navigation">
-        <div class="navbar-brand">
-            <router-link class="navbar-item" to="/">
-                <h3 class="title is-3">HOJA DEL MES</h3>
-            </router-link>
-            <a role="button" class="navbar-burger" :class="{'is-active': isOpen}" @click.prevent="toggleMenu" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            <span aria-hidden="true"></span>
-            </a>
-        </div>
-
-        <div id="navbarBasicExample" class="navbar-menu" :class="{'is-active': isOpen}">
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <template v-if="user">
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">{{ user.email }}</a>
-                            <div class="navbar-dropdown">
-                                <router-link class="navbar-item" to="/">Editar perfil</router-link>
-                                <a class="navbar-item" @click.prevent="logout">Cerrar sesión</a>
-                            </div>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="buttons">
-                            <router-link class="button is-accent" to="/register">
-                                <strong>Registrar</strong>
-                            </router-link>
-                            <router-link class="button is-white" to="/login">
-                                Iniciar sesión
-                            </router-link>
-                        </div>
-                    </template>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <v-app-bar fixed>
+        <router-link class="navbar-item link" to="/">
+            <h3 class="title is-3">HOJA DEL MES</h3>
+        </router-link>
+        <v-spacer></v-spacer>
+        <template v-if="user">
+            <v-btn @click.prevent="logout" icon>
+                <v-icon>mdi-export</v-icon>
+            </v-btn>
+        </template>
+        <template v-else>
+            <v-btn elevation="2" color="primary">
+                <router-link to="/register" class="white--text link">
+                    Registrar
+                </router-link>
+            </v-btn>&nbsp;
+            <v-btn elevation="2">
+                <router-link to="/login" class="link">
+                    Iniciar sesión
+                </router-link>
+            </v-btn>
+        </template>
+    </v-app-bar>
 </template>
 
 <script>

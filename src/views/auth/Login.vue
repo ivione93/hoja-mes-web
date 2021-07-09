@@ -1,30 +1,26 @@
 <template>
-  <div class="container is-fluid mt-50">
-    <div class="columns">
+    <v-row class="mt-100" justify="center">
       <Info />
-      <div class="column is-half">
-          <h3 class="title is-3">INICIAR SESIÓN</h3>
-        <form action="#" @submit.prevent="login" class="box">
-          <div class="field">
-            <div class="control">
-              <input class="input" type="email" placeholder="Email" v-model="email">
-            </div>
-          </div>
-          <div class="field">
-            <div class="control">
-              <input class="input" type="password" placeholder="Contraseña" v-model="password">
-            </div>
-            <a @click.prevent="recoveryPass" class="has-text-grey-dark level-right">Recuperar la contraseña</a>
-          </div>
-          <button type="submit" class="button is-accent">Iniciar sesión</button>
-        </form>
-
-        <div class="notification is-danger mt-10" v-if="error">
-          {{ error }}
-        </div>
-      </div>
-    </div>
-  </div>
+      <v-col cols="12" md="4">
+        <v-form action="#" @submit.prevent="login" class="box">
+          <h3>INICIAR SESIÓN</h3><br><hr><br>
+          <v-container>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="email" label="Email" type="email" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6">
+              <v-text-field v-model="password" label="Contraseña" type="password" outlined clearable></v-text-field>
+            </v-row>
+            <v-row cols="12" sm="6" align="center">
+              <v-btn type="submit" color="primary">Iniciar sesión</v-btn>&nbsp;
+              <v-spacer></v-spacer>
+              <v-btn @click.prevent="recoveryPass" text>Recuperar la contraseña</v-btn>
+            </v-row>
+          </v-container>
+        </v-form>
+        <v-alert type="error" v-if="error">{{ error }}</v-alert>
+      </v-col>
+    </v-row>
 </template>
 
 <script>

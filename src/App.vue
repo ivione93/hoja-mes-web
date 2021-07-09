@@ -1,11 +1,13 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <Navigation />
-    </div>
-    <router-view/>
+  <v-app>
+    <Navigation />
+    <v-main>
+      <v-container fluid>
+        <router-view/>
+      </v-container>
+    </v-main>
     <Footer />
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -20,7 +22,6 @@ export default {
 }
 </script>
 
-<style lang="scss">
-  @import './scss/App.scss';
+<style lang="css">
+  @import './css/App.css';
 </style>
-

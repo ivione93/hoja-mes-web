@@ -1,37 +1,35 @@
 <template>
-  <div class="container is-fluid" v-if="user">
-    <div class="columns">
-      <div class="column is-three-quarters mt-10">
+  <v-container class="mt-70" fluid v-if="user">
+    <v-row>
+      <v-col cols="12" md="8">
         <!-- Entrenamientos -->
-        <p class="subtitle is-4">Entrenamientos</p>
-        <Trainings v-bind:email="user.email"/>
-      </div>
-      <div class="column mt-10">
+        <Calendar v-bind:email="user.email"/>
+      </v-col>
+      <v-col cols="12" md="4">
         <!-- Usuario -->
-        <p class="subtitle is-4">Usuario</p>
         <User v-bind:email="user.email"/>
-        <hr>
-        <p class="subtitle is-4">Competiciones</p>
-        <Competitions v-bind:email="user.email"/>
-      </div>
-    </div>
-  </div>
-  <div class="container is-fluid" v-else>
-    No se ha encontrado usuario
-  </div>
+        <br><hr><br>
+        <LastTraining v-bind:email="user.email"/>
+        <br><hr><br>
+        <LastCompetition v-bind:email="user.email"/>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import firebase from 'firebase'
-import Competitions from '../components/layout/Competitions.vue';
-import Trainings from '../components/layout/Trainings.vue';
+import firebase from 'firebase';
+import Calendar from '../components/layout/Calendar.vue';
 import User from '../components/layout/User.vue';
+import LastCompetition from '../components/layout/LastCompetition.vue';
+import LastTraining from '../components/layout/LastTraining.vue';
 
 export default {
   components: {
-    Competitions,
-    Trainings,
-    User
+    Calendar,
+    User,
+    LastTraining,
+    LastCompetition
   },
   name: 'Home',
   data() {
