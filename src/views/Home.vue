@@ -9,7 +9,7 @@
         <!-- Usuario -->
         <User v-bind:email="user.email"/>
         <br><hr><br>
-        <Training v-bind:email="user.email"/>
+        <LastTraining v-bind:email="user.email"/>
         <br><hr><br>
         <LastCompetition v-bind:email="user.email"/>
       </v-col>
@@ -21,14 +21,14 @@
 import firebase from 'firebase';
 import Calendar from '../components/layout/Calendar.vue';
 import User from '../components/layout/User.vue';
-import Training from '../components/layout/Training.vue';
+import LastTraining from '../components/layout/LastTraining.vue';
 import LastCompetition from '../components/layout/LastCompetition.vue';
 
 export default {
   components: {
     Calendar,
     User,
-    Training,
+    LastTraining,
     LastCompetition
   },
   name: 'Home',
