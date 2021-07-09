@@ -1,5 +1,4 @@
 <template>
-    <!-- Entrenamientos -->
     <v-card>
         <v-row class="fill-height">
     <v-col>

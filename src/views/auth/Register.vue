@@ -54,14 +54,13 @@ export default {
     register() {
       this.error = '';
       if (this.name && this.surname && this.birth && this.email && this.password) {
-        this.birth = this.birth.replaceAll('-','/');
         firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
           .then(user => {
             if (user) {
               firebase.firestore().collection("athlete").doc(this.email).set({
                 name: this.name,
                 surname: this.surname,
-                birth: this.birth,
+                birth: this.birth.replaceAll('-','/'),
                 email: this.email
               })
               .then(() => {

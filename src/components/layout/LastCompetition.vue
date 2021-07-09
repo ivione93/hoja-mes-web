@@ -1,7 +1,7 @@
 <template>
     <!-- Competición más reciente -->
-    <v-card>
-        <v-toolbar>
+    <v-card class='elevation-1'>
+        <v-toolbar class='elevation-0'>
             <v-toolbar-title><v-icon>mdi-trophy</v-icon> Última competición</v-toolbar-title>
         </v-toolbar>
         <v-list>
@@ -14,21 +14,6 @@
                 </v-list-item-content>
                 <v-list-item-action>
                     <v-list-item-action-text v-text="'06/06/2021'"></v-list-item-action-text>
-                    <v-menu left>
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-btn icon v-bind="attrs" v-on="on">
-                            <v-icon>mdi-dots-vertical</v-icon>
-                        </v-btn>
-                        </template>
-                        <v-list>
-                            <v-list-item link>
-                                <v-list-item-title><v-icon>mdi-pencil</v-icon> Ver competición</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item link>
-                                <v-list-item-title><v-icon>mdi-delete</v-icon> Eliminar</v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
                 </v-list-item-action>
             </v-list-item>
         </v-list>

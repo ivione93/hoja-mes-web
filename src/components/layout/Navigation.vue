@@ -1,5 +1,5 @@
 <template>
-    <v-app-bar fixed>
+    <v-app-bar class='elevation-1' fixed>
         <router-link class="navbar-item link" to="/">
             <h3 class="title is-3">HOJA DEL MES</h3>
         </router-link>

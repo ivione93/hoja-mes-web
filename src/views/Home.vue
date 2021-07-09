@@ -1,11 +1,11 @@
 <template>
   <v-container class="mt-70" fluid v-if="user">
     <v-row>
-      <v-col cols="12" md="8">
+      <v-col cols="12" md="10">
         <!-- Entrenamientos -->
         <Calendar v-bind:email="user.email"/>
       </v-col>
-      <v-col cols="12" md="4">
+      <v-col cols="12" md="2">
         <!-- Usuario -->
         <User v-bind:email="user.email"/>
         <br><hr><br>

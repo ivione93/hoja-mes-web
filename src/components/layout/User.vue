@@ -1,7 +1,7 @@
 <template>
     <!-- Usuario -->
-    <v-card>
-        <v-toolbar>
+    <v-card class='elevation-1'>
+        <v-toolbar class='elevation-0'>
             <v-toolbar-title><v-icon>mdi-account</v-icon> Perfil</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-menu>
@@ -19,39 +19,43 @@
                                 </v-btn>
                             </template>
                             <v-card>
-                                <v-card-title>
-                                    <span class="text-h5">Editar perfil</span>
-                                </v-card-title>
-                                <v-card-text>
-                                    <v-container>
-                                        <v-row cols="12" sm="6">
-                                            <v-text-field v-model="userInfo.name" value="userInfo.name" label="Nombre" type="text" outlined clearable></v-text-field>
-                                        </v-row>
-                                        <v-row cols="12" sm="6">
-                                            <v-text-field v-model="userInfo.surname" label="Apellidos" type="text" outlined clearable></v-text-field>
-                                        </v-row>
-                                        <v-row cols="12" sm="6">
-                                            <v-text-field v-model="userInfo.birth" label="Fecha de nacimiento" type="date" outlined clearable></v-text-field>
-                                        </v-row>
-                                    </v-container>
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer></v-spacer>
-                                    <v-btn color="blue darken-1" text @click="dialog = false;">
-                                        Cancelar
-                                    </v-btn>
-                                    <v-btn color="blue darken-1" text @click="dialog = false">
-                                        Guardar
-                                    </v-btn>
-                                </v-card-actions>
+                                <v-form action="#" @submit.prevent="editProfile" class="box">
+                                    <v-card-title>
+                                        <span class="text-h5">Editar perfil</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                        <v-container>
+                                            <v-row cols="12" sm="6">
+                                                <v-text-field v-model="name" label="Nombre" type="text" outlined required></v-text-field>
+                                            </v-row>
+                                            <v-row cols="12" sm="6">
+                                                <v-text-field v-model="surname" label="Apellidos" type="text" outlined required></v-text-field>
+                                            </v-row>
+                                            <v-row cols="12" sm="6">
+                                                <v-text-field v-model="birth" label="Fecha de nacimiento" type="date" outlined required></v-text-field>
+                                            </v-row>
+                                        </v-container>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="blue darken-1" text @click="dialog = false;">
+                                            Cancelar
+                                        </v-btn>
+                                        <v-btn type="submit" color="blue darken-1" text>
+                                            Guardar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-form>
+                                <v-alert type="error" v-if="error">{{ error }}</v-alert>
                             </v-card>
                         </v-dialog>
                     </v-list-item>
                 </v-list>
             </v-menu>
         </v-toolbar>
-        <v-card-text>{{ userInfo.name }} {{ userInfo.surname }}</v-card-text>
-        <v-card-text>{{ userInfo.birth }}</v-card-text>
+        <v-card-title>Nombre: {{ userInfo.name }} {{ userInfo.surname }}</v-card-title>
+        <v-card-subtitle>Fecha de nacimiento:{{ userInfo.birth }}</v-card-subtitle>
+        <v-card-text>Correo de registro: {{ userInfo.email }}</v-card-text>
     </v-card>
 </template>
 
@@ -62,7 +66,11 @@ export default {
     data() {
         return {
             userInfo: [],
+            error: '',
             dialog: false,
+            name: '',
+            surname: '',
+            birth: ''
         };
     },
     mounted() {
@@ -81,6 +89,24 @@ export default {
             .catch((error) => {
                 console.log("Error getting document:", error);
             });
+    },
+    methods: {
+        editProfile() {
+            this.error = '';
+            if (this.name && this.surname && this.birth) {
+                firebase.firestore().collection('athlete').doc(this.userInfo.email).update({
+                    name: this.name,
+                    surname: this.surname,
+                    birth: this.birth.replaceAll('-', '/')
+                })
+                .then(() => {
+                    this.dialog = false;
+                    location.reload();
+                })
+            } else {
+                this.error = 'Todos los campos son requeridos';
+            }
+        }
     }
 }
 </script>
