@@ -13,7 +13,7 @@
                     <v-list-item-subtitle>Resultado: {{ competition.result }}</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                    <v-list-item-action-text v-text="'06/06/2021'"></v-list-item-action-text>
+                    <v-list-item-action-text>{{ competition.date }}</v-list-item-action-text>
                 </v-list-item-action>
             </v-list-item>
         </v-list>
@@ -22,6 +22,7 @@
 
 <script>
 import firebase from 'firebase'
+import moment from 'moment'
 
 export default {
     props: ['email'],
@@ -40,7 +41,15 @@ export default {
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     console.log("Last competition: ", doc.data());
-                    this.lastCompetition.push(doc.data());
+                    this.lastCompetition.push({
+                        email: doc.data().email,
+                        id: doc.data().id,
+                        name: doc.data().name,
+                        place: doc.data().place,
+                        result: doc.data().result,
+                        track: doc.data().track,
+                        date: moment.unix(doc.data().date.seconds).format("DD/MM/YYYY"),
+                    });
                 });
             })
             .catch((error) => {

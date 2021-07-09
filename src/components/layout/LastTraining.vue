@@ -12,7 +12,7 @@
                     <v-list-item-subtitle>Media: {{ training.partial }} /km</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-action>
-                    <v-list-item-action-text v-text="'06/06/2021'"></v-list-item-action-text>
+                    <v-list-item-action-text>{{ training.date }}</v-list-item-action-text>
                 </v-list-item-action>
             </v-list-item>
         </v-list>
@@ -21,6 +21,7 @@
 
 <script>
 import firebase from 'firebase'
+import moment from 'moment'
 
 export default {
     props: ['email'],
@@ -39,7 +40,14 @@ export default {
                 querySnapshot.forEach((doc) => {
                     // doc.data() is never undefined for query doc snapshots
                     console.log("Last training: ", doc.data());
-                    this.lastTraining.push(doc.data());
+                    this.lastTraining.push({
+                        email: doc.data().email,
+                        distance: doc.data().distance,
+                        id: doc.data().id,
+                        partial: doc.data().partial,
+                        time: doc.data().time,
+                        date: moment.unix(doc.data().date.seconds).format("DD/MM/YYYY")
+                    });
                 });
             })
             .catch((error) => {
