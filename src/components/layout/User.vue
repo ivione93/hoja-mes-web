@@ -67,30 +67,36 @@ export default {
         return {
             userInfo: [],
             error: '',
-            dialog: false,
             name: '',
             surname: '',
-            birth: ''
+            birth: '',
+            dialog: false,
         };
     },
     mounted() {
-        this.userInfo = []
-        firebase.firestore().collection('athlete').doc(this.email)
-            .get()
-            .then((doc) => {
-                if (doc.exists) {
-                    this.userInfo = doc.data();
-                    console.log("Document data:", doc.data());
-                } else {
-                    // doc.data() will be undefined in this case
-                    console.log("No such document!");
-                }
-            })
-            .catch((error) => {
-                console.log("Error getting document:", error);
-            });
+        this.getProfile();
     },
     methods: {
+        getProfile() {
+            this.userInfo = []
+            firebase.firestore().collection('athlete').doc(this.email)
+                .get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        this.userInfo = doc.data();
+                        this.name = doc.data().name;
+                        this.surname = doc.data().surname;
+                        this.birth = doc.data().birth;
+                        console.log("User data:", doc.data());
+                    } else {
+                        // doc.data() will be undefined in this case
+                        console.log("No such document!");
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+        },
         editProfile() {
             this.error = '';
             if (this.name && this.surname && this.birth) {
@@ -101,7 +107,7 @@ export default {
                 })
                 .then(() => {
                     this.dialog = false;
-                    location.reload();
+                    this.getProfile();
                 })
             } else {
                 this.error = 'Todos los campos son requeridos';
