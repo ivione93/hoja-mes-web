@@ -95,7 +95,7 @@
              </v-form>
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">
+              <v-btn text color="secondary" @click="selectedOpen = false; currentlyEditing = null">
                 Cerrar
               </v-btn>
               <v-btn text color="secondary" @click.prevent="editEvent(selectedEvent.id)" v-if="currentlyEditing !== selectedEvent.id">
