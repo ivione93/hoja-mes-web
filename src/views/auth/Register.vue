@@ -6,19 +6,19 @@
           <h3>INTRODUCE TUS DATOS DE REGISTRO</h3><br><hr><br>
           <v-container>
             <v-row cols="12" sm="6">
-              <v-text-field v-model="name" label="Nombre" type="text" outlined clearable></v-text-field>
+              <v-text-field v-model="name" label="Nombre" type="text" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6">
-              <v-text-field v-model="surname" label="Apellidos" type="text" outlined clearable></v-text-field>
+              <v-text-field v-model="surname" label="Apellidos" type="text" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6">
-              <v-text-field v-model="password" label="Fecha de nacimiento" type="date" outlined clearable></v-text-field>
+              <v-text-field v-model="password" label="Fecha de nacimiento" type="date" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6">
-              <v-text-field v-model="email" label="Email" type="email" outlined clearable></v-text-field>
+              <v-text-field v-model="email" label="Email" type="email" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6">
-              <v-text-field v-model="password" label="Contraseña" type="password" outlined clearable></v-text-field>
+              <v-text-field v-model="password" label="Contraseña" type="password" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6" align="center">
               <v-btn type="submit" color="primary">Registrar</v-btn>
