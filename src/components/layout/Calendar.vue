@@ -4,7 +4,7 @@
       <v-sheet height="64">
         <v-toolbar flat>
           <v-btn outlined class="mr-4" color="primary darken-2" @click="dialog = true">
-            Nuevo evento
+            Nueva competición
           </v-btn>
           <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
             Hoy
@@ -56,12 +56,18 @@
             <v-container>
               <v-form @submit.prevent="addEvent">
                 <v-card-title>
-                  <span class="text-h5">Nuevo evento</span>
+                  <span class="text-h5">Nueva competición</span>
                 </v-card-title>
-                <v-text-field type="text" label="Nombre" v-model="name"></v-text-field>
+                <v-text-field type="text" label="Lugar" v-model="place"></v-text-field>
+                <v-text-field type="text" label="Campeonato" v-model="name"></v-text-field>
+                <v-text-field type="date" label="Fecha" v-model="start"></v-text-field>
+                <v-text-field type="text" label="Prueba" v-model="track"></v-text-field>
+                <v-text-field type="text" label="Marca" v-model="result"></v-text-field>
+
+                <!-- <v-text-field type="text" label="Nombre" v-model="name"></v-text-field>
                 <v-text-field type="text" label="Detalle" v-model="details"></v-text-field>
                 <v-text-field type="date" label="Fecha" v-model="start"></v-text-field>
-                <v-text-field type="color" label="Color" v-model="color"></v-text-field>
+                <v-text-field type="color" label="Color" v-model="color"></v-text-field> -->
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn color="blue darken-1" text @click="dialog = false;">
@@ -87,15 +93,20 @@
             </v-toolbar>
             <v-card-text>
              <v-form v-if="currentlyEditing !== selectedEvent.id">
-               {{ selectedEvent.details }}
+               <p><v-icon>mdi-map-marker</v-icon>{{ selectedEvent.place }}</p>
+               <p>{{ selectedEvent.track }} - <strong>{{ selectedEvent.result }}</strong></p>
              </v-form>
              <v-form v-else>
-                <v-text-field type="text" v-model="selectedEvent.name" label="Nombre"></v-text-field>
-                <v-text-field type="text" v-model="selectedEvent.details" label="Detalle"></v-text-field>
+              <v-text-field type="text" v-model="selectedEvent.place" label="Lugar"></v-text-field>
+              <v-text-field type="text" v-model="selectedEvent.name" label="Nombre"></v-text-field>
+              <v-text-field type="date" v-model="selectedEvent.start" label="Fecha"></v-text-field>
+              <v-text-field type="text" v-model="selectedEvent.track" label="Prueba"></v-text-field>
+              <v-text-field type="text" v-model="selectedEvent.result" label="Marca"></v-text-field>
+                
              </v-form>
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false; currentlyEditing = null">
+              <v-btn text color="secondary" @click="selectedOpen = false; currentlyEditing = null; getEvents()">
                 Cerrar
               </v-btn>
               <v-btn text color="secondary" @click.prevent="editEvent(selectedEvent.id)" v-if="currentlyEditing !== selectedEvent.id">
@@ -111,7 +122,8 @@
 </template>
 
 <script>
-import firebase from 'firebase'
+import firebase from 'firebase';
+import {v4 as uuidv4} from 'uuid';
 //import moment from 'moment'
 
 export default {
@@ -131,11 +143,16 @@ export default {
     events: [],
     colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
     names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+    uuid: null,
+    place: null,
+    name: null,
+    date: null,
+    track: null,
+    result: null,
     start: null,
     end: null,
-    name: null,
     details: null,
-    color: '#1976D2',
+    color: '#039BE5',
     dialog: false,
     currentlyEditing: null
   }),
@@ -148,9 +165,15 @@ export default {
   methods: {
     async updateEvent(ev) {
       try {
-        await firebase.firestore().collection('events').doc(ev.id).update({
+        await firebase.firestore().collection('competitions').doc(ev.id).update({
+          place: ev.place,
           name: ev.name,
-          details: ev.details
+          date: firebase.firestore.Timestamp.fromDate(new Date(ev.start)),
+          track: ev.track,
+          result: ev.result,
+          details: ev.track + ": " + ev.result,
+          start: new Date(ev.start).toISOString().substring(0,10),
+          end: new Date(ev.start).toISOString().substring(0,10)
         });
         this.selectedOpen = false;
         this.currentlyEditing = null;
@@ -164,7 +187,7 @@ export default {
     },
     async deleteEvent(ev) {
       try {
-        await firebase.firestore().collection('events').doc(ev.id).delete();
+        await firebase.firestore().collection('competitions').doc(ev.id).delete();
         this.selectedOpen = false;
         this.getEvents();
       } catch (error) {
@@ -173,10 +196,18 @@ export default {
     },
     async addEvent() {
       try {
-        if(this.name && this.start) {
-          await firebase.firestore().collection('events').add({
+        if(this.place && this.name && this.start && this.track && this.result) {
+          this.uuid = uuidv4();
+          console.log("UUID: ", this.uuid)
+          await firebase.firestore().collection('competitions').doc(this.uuid).set({
+            id: this.uuid,
+            email: this.email,
+            place: this.place,
             name: this.name,
-            details: this.details,
+            date: firebase.firestore.Timestamp.fromDate(new Date(this.start)),
+            track: this.track,
+            result: this.result,
+            details: this.track + ": " + this.result,
             start: new Date(this.start).toISOString().substring(0,10),
             end: new Date(this.start).toISOString().substring(0,10),
             color: this.color
@@ -190,10 +221,15 @@ export default {
 
           this.getEvents();
 
+          this.uudi = null;
+          this.place = null;
           this.name = null;
+          this.date = null;
+          this.track = null;
+          this.result = null;
           this.details = null;
           this.start = null;
-          this.color = '#1976D2';
+          this.color = '#039BE5';
         } else {
           console.log("Campos obligatorios");
         }
@@ -203,22 +239,13 @@ export default {
     },
     async getEvents() {
       try {
-        //const snapshot = await firebase.firestore().collection('competitions').where('email', "==", this.email).get();
-        const snapshot = await firebase.firestore().collection('events').get();
+        const snapshot = await firebase.firestore().collection('competitions').where('email', "==", this.email).get();
         const events = [];
 
         snapshot.forEach(doc => {
-          console.log("Eventos: ", doc.data());
+          console.log("Competiciones: ", doc.data());
           let eventoData = doc.data();
           eventoData.id = doc.id;
-          /*eventoData.date = moment.unix(doc.data().date.seconds).format("DD/MM/YYYY");
-          eventoData.email = doc.data().email;
-          eventoData.end = moment.unix(doc.data().end.seconds).format("YYYY-MM-DD");
-          eventoData.place = doc.data().place;
-          eventoData.result = doc.data().result;
-          eventoData.start = moment.unix(doc.data().start.seconds).format("YYYY-MM-DD");
-          eventoData.track = doc.data().email;*/
-          console.log("EventoData: ", eventoData);
           events.push(eventoData);
         })
         this.events = events;
