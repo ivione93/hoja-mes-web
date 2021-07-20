@@ -49,7 +49,7 @@
           </v-menu>
         </v-toolbar>
       </v-sheet>
-      <v-sheet height="800">
+      <v-sheet height="650">
         <v-calendar ref="calendar" v-model="focus" color="primary" :events="events" :event-color="getEventColor" :type="type"
           @click:event="showEvent" @click:more="viewDay" @click:date="viewDay" @change="updateRange" locale="es" :weekdays="weekday"></v-calendar>
 
@@ -63,13 +63,13 @@
                 </v-card-title>
                 <v-card-text>
                 <v-row>
-                  <v-text-field type="date" label="Fecha" v-model="startTraining" outlined></v-text-field>
+                  <v-text-field type="date" label="Fecha" v-model="start" outlined></v-text-field>
                 </v-row>
                 <v-row align="center">
-                  <v-text-field type="text" label="Tiempo" v-model="timeTraining" outlined></v-text-field>
+                  <v-text-field type="text" label="Tiempo" v-model="time" outlined></v-text-field>
                 </v-row>
                 <v-row>
-                  <v-text-field type="number" label="Distancia" v-model="distanceTraining" outlined></v-text-field>
+                  <v-text-field type="number" label="Distancia" v-model="distance" outlined></v-text-field>
                 </v-row>
                 <v-row>
                   Datos adicionales: series, cuestas y fartlek
@@ -147,9 +147,9 @@
                <p>{{ selectedEvent.distance }} kms - <strong>{{ selectedEvent.time }} ({{ selectedEvent.partial }}/km)</strong></p>
              </v-form>
              <v-form v-else-if="currentlyEditing === selectedEvent.id && selectedEvent.name == 'Entrenamiento'">
-              <v-text-field type="date" v-model="selectedEvent.startTraining" label="Fecha" outlined></v-text-field>
-              <v-text-field type="text" v-model="selectedEvent.timeTraining" label="Tiempo" outlined></v-text-field>
-              <v-text-field type="number" v-model="selectedEvent.distanceTraining" label="Distancia" outlined></v-text-field>
+              <v-text-field type="date" v-model="selectedEvent.start" label="Fecha" outlined></v-text-field>
+              <v-text-field type="text" v-model="selectedEvent.time" label="Tiempo" outlined></v-text-field>
+              <v-text-field type="number" v-model="selectedEvent.distance" label="Distancia" outlined></v-text-field>
              </v-form>
              <v-form v-else>
               <v-text-field type="text" v-model="selectedEvent.place" label="Lugar" outlined></v-text-field>
@@ -197,23 +197,25 @@ export default {
     events: [],
     colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
     names: ['Meeting', 'Holiday', 'PTO', 'Travel', 'Event', 'Birthday', 'Conference', 'Party'],
+    // Comun
+    id: null,
     uuid: null,
-    place: null,
     name: null,
     date: null,
-    track: null,
-    result: null,
     start: null,
     end: null,
     details: null,
+    //Competitions
+    place: null,
+    track: null,
+    result: null,
     color: '#039BE5',
     dialog: false,
     // Training
-    startTraining: null,
-    timeTraining: null,
-    distanceTraining: null,
-    dialogTraining: false,
+    time: null,
+    distance: null,
     colorTraining: '#F60',
+    dialogTraining: false,
     currentlyEditing: null
   }),
   mounted () {
@@ -246,12 +248,13 @@ export default {
     async updateTraining(training) {
       try {
         await firebase.firestore().collection('trainings').doc(training.id).update({
-          date: firebase.firestore.Timestamp.fromDate(new Date(training.startTraining)),
-          time: training.timeTraining,
-          distance: training.distanceTraining,
-          details: training.distanceTraining + " kms: " + training.timeTraining,
-          start: new Date(training.startTraining).toISOString().substring(0,10),
-          end: new Date(training.startTraining).toISOString().substring(0,10)
+          date: firebase.firestore.Timestamp.fromDate(new Date(training.start)),
+          time: training.time,
+          distance: training.distance,
+          partial: '5.00 (t)',
+          details: training.distance + " kms: " + training.time,
+          start: new Date(training.start).toISOString().substring(0,10),
+          end: new Date(training.start).toISOString().substring(0,10)
         });
         this.selectedOpen = false;
         this.currentlyEditing = null;
@@ -268,6 +271,7 @@ export default {
         await firebase.firestore().collection('competitions').doc(ev.id).delete();
         this.selectedOpen = false;
         this.getEvents();
+        this.getTrainings();
       } catch (error) {
         console.log(error);
       }
@@ -286,7 +290,6 @@ export default {
       try {
         if(this.place && this.name && this.start && this.track && this.result) {
           this.uuid = uuidv4();
-          console.log("UUID: ", this.uuid)
           await firebase.firestore().collection('competitions').doc(this.uuid).set({
             id: this.uuid,
             email: this.email,
@@ -301,14 +304,16 @@ export default {
             color: this.color
           })
           .then((docRef) => {
-            console.log("Competition saved with ID: ", docRef.id);
+            console.log("Competition saved with ID: ", docRef);
           })
           .catch((error) => {
             console.error("Error adding competition: ", error);
           });
 
           this.getEvents();
+          this.getTrainings();
 
+          this.id = null;
           this.uudi = null;
           this.place = null;
           this.name = null;
@@ -326,34 +331,36 @@ export default {
     },
     async addTraining() {
       try {
-        if(this.startTraining && this.timeTraining && this.distanceTraining) {
+        if(this.start && this.time && this.distance) {
           this.uuid = uuidv4();
-          console.log("UUID: ", this.uuid)
           await firebase.firestore().collection('trainings').doc(this.uuid).set({
             id: this.uuid,
             email: this.email,
             name: 'Entrenamiento',
-            date: firebase.firestore.Timestamp.fromDate(new Date(this.startTraining)),
-            distance: this.distanceTraining,
-            time: this.timeTraining,
-            details: this.distanceTraining + "kms: " + this.timeTraining,
-            start: new Date(this.startTraining).toISOString().substring(0,10),
-            end: new Date(this.startTraining).toISOString().substring(0,10),
+            date: firebase.firestore.Timestamp.fromDate(new Date(this.start)),
+            distance: this.distance,
+            time: this.time,
+            partial: '5.00 (t)',
+            details: this.distance + "kms: " + this.time,
+            start: new Date(this.start).toISOString().substring(0,10),
+            end: new Date(this.start).toISOString().substring(0,10),
             color: this.colorTraining
           })
           .then((docRef) => {
-            console.log("Training saved with ID: ", docRef.id);
+            console.log("Training saved with ID: ", docRef);
           })
           .catch((error) => {
             console.error("Error adding training: ", error);
           });
 
           this.getEvents();
+          this.getTrainings();
 
+          this.id = null;
           this.uudi = null;
-          this.startTraining = null;
-          this.timeTraining = null;
-          this.distanceTraining = null;
+          this.start = null;
+          this.time = null;
+          this.distance = null;
         } else {
           console.log("Campos obligatorios");
         }
@@ -432,6 +439,6 @@ export default {
     rnd (a, b) {
       return Math.floor((b - a + 1) * Math.random()) + a
     },
-  },
+  }
 }
 </script>
