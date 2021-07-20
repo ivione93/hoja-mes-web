@@ -34,27 +34,32 @@ export default {
         };
     },
     mounted() {
-        this.lastCompetition = []
-        firebase.firestore().collection('competitions').where("email", "==", this.email).orderBy("date", "desc").limit(1)
-            .get()
-            .then((querySnapshot) => {
-                querySnapshot.forEach((doc) => {
-                    // doc.data() is never undefined for query doc snapshots
-                    console.log("Last competition: ", doc.data());
-                    this.lastCompetition.push({
-                        email: doc.data().email,
-                        id: doc.data().id,
-                        name: doc.data().name,
-                        place: doc.data().place,
-                        result: doc.data().result,
-                        track: doc.data().track,
-                        date: moment.unix(doc.data().date.seconds).format("DD/MM/YYYY"),
+        this.getLastCompetition();
+    },
+    methods: {
+        getLastCompetition() {
+            this.lastCompetition = []
+            firebase.firestore().collection('competitions').where("email", "==", this.email).orderBy("date", "desc").limit(1)
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log("Last competition: ", doc.data());
+                        this.lastCompetition.push({
+                            email: doc.data().email,
+                            id: doc.data().id,
+                            name: doc.data().name,
+                            place: doc.data().place,
+                            result: doc.data().result,
+                            track: doc.data().track,
+                            date: moment.unix(doc.data().date.seconds).format("DD/MM/YYYY"),
+                        });
                     });
+                })
+                .catch((error) => {
+                    console.log("Error getting last competition: ", error);
                 });
-            })
-            .catch((error) => {
-                console.log("Error getting last competition: ", error);
-            });
+        }
     }
 }
 </script>
