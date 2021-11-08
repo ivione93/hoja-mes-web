@@ -6,9 +6,7 @@
                     <div class="text-overline mb-4">
                     Aplicación web de escritorio de la HOJA DEL MES
                     </div>
-                    <v-list-item-title class="text-h5 mb-1">
-                    HOJA DEL MES
-                    </v-list-item-title>
+                    <v-img max-height="350" max-width="500" src="../../img/ic_logo.png"></v-img>
                     <v-list-item-subtitle>También disponible para móvil</v-list-item-subtitle>
                 </v-list-item-content>
                 <v-list-item-avatar tile size="150" color="grey">QR</v-list-item-avatar>

@@ -1,7 +1,7 @@
 <template>
     <v-app-bar class='elevation-1' fixed>
         <router-link class="navbar-item link" to="/">
-            <h3 class="title is-3">HOJA DEL MES</h3>
+            <v-img src="../../img/logo.png" max-height="30" max-width="30"></v-img>
         </router-link>
         <v-spacer></v-spacer>
         <template v-if="user">
