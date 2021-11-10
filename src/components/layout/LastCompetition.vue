@@ -1,7 +1,7 @@
 <template>
     <!-- Competición más reciente -->
-    <v-card class='elevation-1'>
-        <v-toolbar class='elevation-0'>
+    <v-card outlined color="#039BE5">
+        <v-toolbar class='elevation-0' color="#039BE5" dark>
             <v-toolbar-title><v-icon>mdi-trophy</v-icon> Última competición</v-toolbar-title>
         </v-toolbar>
         <v-list>

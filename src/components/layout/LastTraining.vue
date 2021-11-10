@@ -1,7 +1,7 @@
 <template>
     <!-- Entrenamiento más reciente -->
-    <v-card class='elevation-1'>
-        <v-toolbar class='elevation-0'>
+    <v-card outlined color="#212B39">
+        <v-toolbar class='elevation-0' color="#212B39" dark>
             <v-toolbar-title><v-icon>mdi-run</v-icon> Último entrenamiento</v-toolbar-title>
         </v-toolbar>
         <v-list>

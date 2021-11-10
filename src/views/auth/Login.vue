@@ -12,7 +12,7 @@
               <v-text-field v-model="password" label="Contraseña" type="password" outlined></v-text-field>
             </v-row>
             <v-row cols="12" sm="6" align="center">
-              <v-btn type="submit" color="primary">Iniciar sesión</v-btn>&nbsp;
+              <v-btn type="submit" color="#039BE5" dark>Iniciar sesión</v-btn>&nbsp;
               <v-spacer></v-spacer>
               <v-btn @click.prevent="recoveryPass" text>Recuperar la contraseña</v-btn>
             </v-row>

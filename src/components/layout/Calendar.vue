@@ -3,21 +3,21 @@
     <v-col>
       <v-sheet height="64">
         <v-toolbar flat>
-          <v-btn outlined class="mr-4" color="primary darken-2" @click="dialogTraining = true">
+          <v-btn class="mr-4" dark color="#212B39" depressed @click="dialogTraining = true">
             Añadir entrenamiento
           </v-btn>
-          <v-btn outlined class="mr-4" color="primary darken-2" @click="dialog = true">
+          <v-btn class="mr-4" dark color="#039BE5" depressed @click="dialog = true">
             Añadir competición
           </v-btn>
-          <v-btn outlined class="mr-4" color="grey darken-2" @click="setToday">
+          <v-btn outlined class="mr-4" color="#212B39" @click="setToday">
             Hoy
           </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="prev">
+          <v-btn fab text small color="#212B39" @click="prev">
             <v-icon small>
               mdi-chevron-left
             </v-icon>
           </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="next">
+          <v-btn fab text small color="#212B39" @click="next">
             <v-icon small>
               mdi-chevron-right
             </v-icon>
@@ -28,7 +28,7 @@
           <v-spacer></v-spacer>
           <v-menu bottom right>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn outlined color="grey darken-2" v-bind="attrs" v-on="on">
+              <v-btn outlined color="#212B39" v-bind="attrs" v-on="on">
                 <span>{{ typeToLabel[type] }}</span>
                 <v-icon right>
                   mdi-menu-down
@@ -55,74 +55,75 @@
 
         <!-- Modal de agregar entrenamiento -->
         <v-dialog v-model="dialogTraining" persistent max-width="600px">
-          <v-card class="box">
-            <v-container>
-              <v-form @submit.prevent="addTraining">
-                <v-card-title>
-                  <span class="text-h5">Nuevo entrenamiento</span>
-                </v-card-title>
-                <v-card-text>
-                <v-row>
-                  <v-text-field type="date" label="Fecha" v-model="start" outlined></v-text-field>
-                </v-row>
-                <v-row align="center">
-                  <v-text-field type="text" label="Tiempo" v-model="time" outlined></v-text-field>
-                </v-row>
-                <v-row>
-                  <v-text-field type="number" label="Distancia" v-model="distance" outlined></v-text-field>
-                </v-row>
-                <v-row>
-                  Datos adicionales: series, cuestas y fartlek
-                </v-row>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialogTraining = false;">
-                      Cancelar
-                  </v-btn>
-                  <v-btn type="submit" color="blue darken-1" text @click.stop="dialogTraining = false">
-                      Guardar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-container>
+          <v-card>
+            <v-form @submit.prevent="addTraining">
+              <v-toolbar color="#212B39" dark>Nuevo entrenamiento</v-toolbar>
+              <v-card-text class="mr-4">
+                <v-container>
+                  <v-row><br></v-row>
+                  <v-row>
+                    <v-text-field type="date" label="Fecha" v-model="start" outlined></v-text-field>
+                  </v-row>
+                  <v-row align="center">
+                    <v-text-field type="text" label="Tiempo" v-model="time" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-text-field type="number" label="Distancia" v-model="distance" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-text-field type="text" label="Observaciones" v-model="observes" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    Datos adicionales: series, cuestas, fartlek y gym
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#212B39" text @click="dialogTraining = false;">
+                    Cancelar
+                </v-btn>
+                <v-btn type="submit" color="#212B39" dark @click.stop="dialogTraining = false">
+                    Guardar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-dialog>
 
         <!-- Modal de agregar competición -->
         <v-dialog v-model="dialog" persistent max-width="600px">
           <v-card class="box">
-            <v-container>
-              <v-form @submit.prevent="addEvent">
-                <v-card-title>
-                  <span class="text-h5">Nueva competición</span>
-                </v-card-title>
-                <v-card-text>
-                <v-row align="center">
-                  <v-text-field type="text" label="Lugar" v-model="place" outlined></v-text-field>
-                </v-row>
-                <v-row>
-                  <v-text-field type="text" label="Campeonato" v-model="name" outlined></v-text-field>
-                </v-row>
-                <v-row>
-                  <v-text-field type="date" label="Fecha" v-model="start" outlined></v-text-field>
-                </v-row>
-                <v-row>
-                  <v-text-field type="text" label="Prueba" v-model="track" style="margin-right: 5px" outlined></v-text-field>
-                  <v-text-field type="text" label="Marca" v-model="result" style="margin-left: 5px" outlined></v-text-field>
-                </v-row>
-                </v-card-text>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="dialog = false;">
-                      Cancelar
-                  </v-btn>
-                  <v-btn type="submit" color="blue darken-1" text @click.stop="dialog = false">
-                      Guardar
-                  </v-btn>
-                </v-card-actions>
-              </v-form>
-            </v-container>
+            <v-form @submit.prevent="addEvent">
+              <v-toolbar color="#039BE5" dark>Nueva competición</v-toolbar>
+              <v-card-text>
+                <v-container>
+                  <v-row><br></v-row>
+                  <v-row align="center">
+                    <v-text-field type="text" label="Lugar" v-model="place" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-text-field type="text" label="Campeonato" v-model="name" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-text-field type="date" label="Fecha" v-model="start" outlined></v-text-field>
+                  </v-row>
+                  <v-row>
+                    <v-text-field type="text" label="Prueba" v-model="track" style="margin-right: 5px" outlined></v-text-field>
+                    <v-text-field type="text" label="Marca" v-model="result" style="margin-left: 5px" outlined></v-text-field>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="#039BE5" text @click="dialog = false;">
+                    Cancelar
+                </v-btn>
+                <v-btn type="submit" color="#039BE5" dark @click.stop="dialog = false">
+                    Guardar
+                </v-btn>
+              </v-card-actions>
+            </v-form>
           </v-card>
         </v-dialog>
 
@@ -214,7 +215,8 @@ export default {
     // Training
     time: null,
     distance: null,
-    colorTraining: '#F60',
+    observes: null,
+    colorTraining: '#212B39',
     dialogTraining: false,
     currentlyEditing: null
   }),
@@ -340,6 +342,7 @@ export default {
             date: firebase.firestore.Timestamp.fromDate(new Date(this.start)),
             distance: this.distance,
             time: this.time,
+            observes: this.observes,
             partial: '5.00 (t)',
             details: this.distance + "kms: " + this.time,
             start: new Date(this.start).toISOString().substring(0,10),
@@ -361,6 +364,7 @@ export default {
           this.start = null;
           this.time = null;
           this.distance = null;
+          this.observes = null;
         } else {
           console.log("Campos obligatorios");
         }

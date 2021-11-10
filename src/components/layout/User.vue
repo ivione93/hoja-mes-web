@@ -1,6 +1,6 @@
 <template>
     <!-- Usuario -->
-    <v-card class='elevation-1'>
+    <v-card class='elevation-0' outlined dark>
         <v-toolbar class='elevation-0'>
             <v-toolbar-title><v-icon>mdi-account</v-icon> Perfil</v-toolbar-title>
             <v-spacer></v-spacer>
